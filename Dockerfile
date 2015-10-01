@@ -113,7 +113,3 @@ RUN chmod +x /opt/google/chrome/google-chrome
 COPY entry_point.sh /opt/bin/entry_point.sh
 RUN chmod +x /opt/bin/entry_point.sh
 
-USER tester
-
-CMD ["/opt/bin/entry_point.sh"]
-

@@ -113,3 +113,7 @@ RUN chmod +x /opt/google/chrome/google-chrome
 COPY entry_point.sh /opt/bin/entry_point.sh
 RUN chmod +x /opt/bin/entry_point.sh
 
+RUN ln -s /usr/bin/nodejs /usr/bin/node
+RUN webdriver-manager update
+RUN npm install jasmine-reporters@^1.0.0
+ENTRYPOINT ["xvfb-run", "--server-args=\"$DISPLAY -screen 0 1360x1040x24 -ac +extension RANDR\""]

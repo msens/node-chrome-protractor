@@ -1,6 +1,8 @@
 FROM ubuntu:15.04
 MAINTAINER mjvdende <@mjvdende>
 
+USER root
+
 ENV DEBIAN_FRONTEND noninteractive
 ENV DEBCONF_NONINTERACTIVE_SEEN true
 
@@ -16,6 +18,7 @@ RUN  echo "deb http://archive.ubuntu.com/ubuntu vivid main universe\n" > /etc/ap
 RUN apt-get update -qqy \
   && apt-get -qqy --no-install-recommends install \
     ca-certificates \
+    build-essential \
     openjdk-8-jre-headless \
     openjdk-8-jdk \
     nodejs \
@@ -27,6 +30,8 @@ RUN apt-get update -qqy \
     wget \
   && rm -rf /var/lib/apt/lists/* \
   && sed -i 's/securerandom\.source=file:\/dev\/random/securerandom\.source=file:\/dev\/urandom/' ./usr/lib/jvm/java-8-openjdk-amd64/jre/lib/security/java.security
+
+RUN ln -s /usr/bin/nodejs /usr/bin/node
 
 #==========
 # Selenium
@@ -46,6 +51,7 @@ RUN sudo useradd tester --shell /bin/bash --create-home \
 # NodeJS Tooling
 #========================================
 RUN npm install -g grunt-cli bower protractor jasmine-reporters@^1.0.0
+RUN webdriver-manager update
 
 #===================
 # Timezone settings
@@ -70,8 +76,6 @@ ENV SCREEN_WIDTH 1360
 ENV SCREEN_HEIGHT 1020
 ENV SCREEN_DEPTH 24
 ENV DISPLAY :99.0
-
-USER root
 
 #===============
 # Google Chrome
@@ -106,14 +110,3 @@ COPY config.json /opt/selenium/config.json
 #=================================
 COPY chrome_launcher.sh /opt/google/chrome/google-chrome
 RUN chmod +x /opt/google/chrome/google-chrome
-
-#==============================
-# Scripts to run Selenium Node
-#==============================
-COPY entry_point.sh /opt/bin/entry_point.sh
-RUN chmod +x /opt/bin/entry_point.sh
-
-RUN ln -s /usr/bin/nodejs /usr/bin/node
-RUN webdriver-manager update
-RUN npm install jasmine-reporters@^1.0.0
-ENTRYPOINT ["xvfb-run", "--server-args=\"$DISPLAY -screen 0 1360x1040x24 -ac +extension RANDR\""]

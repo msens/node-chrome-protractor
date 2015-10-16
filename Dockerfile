@@ -28,38 +28,28 @@ RUN apt-get update -qqy \
     sudo \
     unzip \
     wget \
+    curl \
   && rm -rf /var/lib/apt/lists/* \
   && sed -i 's/securerandom\.source=file:\/dev\/random/securerandom\.source=file:\/dev\/urandom/' ./usr/lib/jvm/java-8-openjdk-amd64/jre/lib/security/java.security
 
-RUN ln -s /usr/bin/nodejs /usr/bin/node
+#======================
+# Setup nodejs repo
+#======================
+RUN curl -sL https://deb.nodesource.com/setup_4.x | bash -
+RUN apt-get install -y nodejs && ln -sf /usr/bin/nodejs /usr/bin/node && npm install npm -g
+
+#========================================
+# NodeJS Tooling
+#========================================
+RUN npm install -g grunt-cli bower protractor
+RUN npm install jasmine-reporters@^1.0.0
+RUN webdriver-manager update
 
 #==========
 # Selenium
 #==========
 RUN  mkdir -p /opt/selenium \
   && wget --no-verbose http://selenium-release.storage.googleapis.com/2.47/selenium-server-standalone-2.47.1.jar -O /opt/selenium/selenium-server-standalone.jar
-
-#========================================
-# Add tester user with passwordless sudo
-#========================================
-RUN sudo useradd tester --shell /bin/bash --create-home \
-  && sudo usermod -a -G sudo tester \
-  && echo 'ALL ALL = (ALL) NOPASSWD: ALL' >> /etc/sudoers \
-  && echo 'tester:tester' | chpasswd
-
-#========================================
-# NodeJS Tooling
-#========================================
-RUN npm install -g grunt-cli bower protractor jasmine-reporters@^1.0.0
-RUN webdriver-manager update
-
-#===================
-# Timezone settings
-# Possible alternative: https://github.com/docker/docker/issues/3359#issuecomment-32150214
-#===================
-ENV TZ "US/Pacific"
-RUN echo "US/Pacific" | sudo tee /etc/timezone \
-  && dpkg-reconfigure --frontend noninteractive tzdata
 
 #==============
 # VNC and Xvfb
@@ -110,6 +100,3 @@ COPY config.json /opt/selenium/config.json
 #=================================
 COPY chrome_launcher.sh /opt/google/chrome/google-chrome
 RUN chmod +x /opt/google/chrome/google-chrome
-
-RUN webdriver-manager update
-RUN npm install jasmine-reporters@^1.0.0

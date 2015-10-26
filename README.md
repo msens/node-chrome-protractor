@@ -1,5 +1,7 @@
 # node-chrome-protractor
 
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/mjvdende/node-chrome-protractor?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+
 [![](https://badge.imagelayers.io/mjvdende/node-chrome-protractor:latest.svg)](https://imagelayers.io/?images=mjvdende/node-chrome-protractor:latest 'Get your own badge on imagelayers.io')
 
 ##Usage

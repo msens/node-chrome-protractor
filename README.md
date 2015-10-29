@@ -16,6 +16,11 @@ docker run -it -v $PWD/tests:/tests -w="/tests" my/tag:latest
 
 
 
+
+
+
+
+
 OLD:
 
 Create a run tests script to start a display server and then start protractor:

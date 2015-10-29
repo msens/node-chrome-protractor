@@ -12,7 +12,7 @@ Build docker container:
 docker build -t="my/tag:latest" .
 
 Run docker container:
-docker run -it -v $PWD/tests:/tests -w="/tests" my/tag:latest
+docker run -it -v $PWD/tests:/tests -w="/tests" my/tag:latest /tests/run-tests.sh
 
 
 OLD:

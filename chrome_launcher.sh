@@ -27,7 +27,7 @@ its hardware is no longer supported."
   fi
   exit 1
 fi
-
+ 
 # We include some xdg utilities next to the binary, and we want to prefer them
 # over the system versions when we know the system versions are very old. We
 # detect whether the system xdg utilities are sufficiently new to be likely to

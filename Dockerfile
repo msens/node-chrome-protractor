@@ -101,3 +101,9 @@ COPY config.json /opt/selenium/config.json
 #=================================
 COPY chrome_launcher.sh /opt/google/chrome/google-chrome
 RUN chmod +x /opt/google/chrome/google-chrome
+
+#=================================
+# Dos2Unix some files
+#=================================
+RUN dos2unix /opt/google/chrome/google-chrome
+RUN dos2unix /tests/run-tests.sh
